@@ -101,7 +101,7 @@ sda                               8:0    0   40G  0 disk
 ...
 ```
 
-После восстановления snapshot исчезает (смерджился):
+После восстановления snapshot исчезает (смердживается):
 ```bash
 [root@lvm vagrant]# lsblk
 NAME                       MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT

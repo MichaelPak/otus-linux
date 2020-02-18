@@ -3,9 +3,9 @@
 
 # Создание рейда
 
-К виртуальной машине подключено дополн  ительно 6 дисков. Создание рейда производится через `provisioner` в `Vagrantfile`:
+К виртуальной машине подключено дополнительно 6 дисков. Создание рейда производится через `provisioner` в `Vagrantfile`:
 
-```
+```ruby
 # Create raid
 box.vm.provision "shell", inline: <<-SHELL
     mdadm --create --verbose /dev/md0 -l 6 -n 5 /dev/sd{b,c,d,e,f}
@@ -297,4 +297,41 @@ Number  Start (sector)    End (sector)  Size       Code  Name
    3          608256          915455   150.0 MiB   0700  primary
    4          915456         1219583   148.5 MiB   0700  primary
    5         1219584         1520639   147.0 MiB   0700  primary
+```
+
+# Автоматическое создание GPT партиций
+Создание и монтирование партиций происходит через `provisioner`:
+```ruby
+# Create partitions on raid and mount them
+box.vm.provision "shell", inline: <<-SHELL
+    parted -s /dev/md0 mklabel gpt
+    parted /dev/md0 mkpart primary ext4 0% 20%
+    parted /dev/md0 mkpart primary ext4 20% 40%
+    parted /dev/md0 mkpart primary ext4 40% 60%
+    parted /dev/md0 mkpart primary ext4 60% 80%
+    parted /dev/md0 mkpart primary ext4 80% 100%
+    
+    mkdir /raid
+    for i in $(seq 1 5); do
+        mkfs.ext4 /dev/md0p$i
+        mkdir /raid/part$i
+        mount /dev/md0p$i /raid/part$i
+    done
+SHELL
+```
+
+```bash
+[vagrant@otuslinux ~]$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        40G  2.9G   38G   8% /
+devtmpfs        488M     0  488M   0% /dev
+tmpfs           496M     0  496M   0% /dev/shm
+tmpfs           496M  6.7M  489M   2% /run
+tmpfs           496M     0  496M   0% /sys/fs/cgroup
+/dev/md0p1      139M  1.6M  127M   2% /raid/part1
+/dev/md0p2      140M  1.6M  128M   2% /raid/part2
+/dev/md0p3      142M  1.6M  130M   2% /raid/part3
+/dev/md0p4      140M  1.6M  128M   2% /raid/part4
+/dev/md0p5      139M  1.6M  127M   2% /raid/part5
+tmpfs           100M     0  100M   0% /run/user/1000
 ```

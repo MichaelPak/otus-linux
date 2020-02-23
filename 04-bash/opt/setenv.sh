@@ -3,6 +3,15 @@
 COUNT_IP_X=10
 REQUESTED_PATHS_Y=10
 
-ACCESS_LOG_PATH="/opt/access.log"
-TMP_MESSAGE_PATH="/tmp/message"
-PID_FILE_PATH="/tmp/message"
+WORK_PATH="/opt"
+TMP_PATH="/tmp/messages"
+
+ACCESS_LOG_PATH="$WORK_PATH/access.log"
+LOCKFILE_PATH="$WORK_PATH/message.lock"
+
+TMP_LOG_PATH="$TMP_PATH/tmp.log"
+TMP_MESSAGE_PATH="$TMP_PATH/message"
+PID_FILE_PATH="$TMP_PATH/message"
+STATE_PATH="$TMP_PATH/state"
+
+RECIPIENT_ADDRESS="mialpak@gmail.com"

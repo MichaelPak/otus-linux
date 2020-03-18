@@ -1,0 +1,10 @@
+---
+
+- hosts: web
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Install Nginx
+      include_role:
+        name: nginx

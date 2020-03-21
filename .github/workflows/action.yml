@@ -1,4 +1,4 @@
-name: deploy
+name: action
 
 on: [push]
 
@@ -16,4 +16,4 @@ jobs:
       - uses: dschep/install-pipenv-action@v1
 
       - name: Run 11-docker
-        run: 11-docker/bin/run.sh
+        run: DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }} 11-docker/bin/run.sh

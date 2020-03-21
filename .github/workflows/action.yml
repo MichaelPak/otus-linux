@@ -15,15 +15,5 @@ jobs:
 
       - uses: dschep/install-pipenv-action@v1
 
-      - name: Create requirements file
-        run: pipenv lock --requirements > requirements.txt
-
-      - name: Build backend
-        run: docker build . --file 11-docker/back/Dockerfile --tag michaelpak/otus-docker-back
-
-      - name: Push backend
-        uses: elgohr/Publish-Docker-Github-Action@master
-        with:
-          name: michaelpak/self
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Run 11-docker
+        run: 11-docker/bin/run.sh

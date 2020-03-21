@@ -8,7 +8,7 @@ docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 
 build_and_push () {
     cd 11-docker/back && pipenv lock --requirements > requirements.txt
-    docker build -t michaelpak/otus-linux-$1 .
+    docker build --build-arg VCS_REF=`git rev-parse --short HEAD` -t michaelpak/otus-linux-$1 .
     docker push michaelpak/otus-linux-$1
 }
 

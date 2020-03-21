@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  back:
+    image: michaelpak/otus-docker-back
+    container_name: otus-docker-back
+
+  

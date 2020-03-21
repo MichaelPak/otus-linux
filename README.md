@@ -1,5 +1,6 @@
 otus-linux
 ===
+[![Actions Status](https://github.com/MichaelPak/self/workflows/deploy/badge.svg)](https://github.com/MichaelPak/self/actions)
 
 Домашние задания [по курсу "Администратор Linux"](https://otus.ru/lessons/linux/)
 

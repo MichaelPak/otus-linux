@@ -11,3 +11,6 @@
 # Packer
 *.box
 packer_cache
+
+# App
+11-docker/requirements.txt

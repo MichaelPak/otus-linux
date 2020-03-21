@@ -4,5 +4,12 @@ services:
   back:
     image: michaelpak/otus-docker-back
     container_name: otus-docker-back
+    command: ["gunicorn", "-w 4", "--bind=0.0.0.0", "server:app"]
 
-  
+  front:
+    image: michaelpak/otus-docker-front
+    container_name: otus-docker-front
+    ports:
+      - 80:80
+    depends_on:
+      - back

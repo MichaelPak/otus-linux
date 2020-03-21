@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM nginx:1.17-alpine
 
 ARG VCS_REF
 
@@ -9,11 +9,5 @@ LABEL org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
 
-WORKDIR /app
-
-COPY back/requirements.txt /app/
-RUN pip install -r requirements.txt
-
-COPY back/server.py /app/
-
-CMD ["gunicorn", "-w 4", "server:app"]
+ADD front/app.conf /etc/nginx/conf.d/
+ADD front/index.html /usr/share/nginx/html/index.html

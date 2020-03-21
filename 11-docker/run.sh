@@ -10,7 +10,7 @@ docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 build_and_push () {
     cd 11-docker && docker build --build-arg VCS_REF=`git rev-parse --short HEAD` \
             -f $1/Dockerfile -t michaelpak/otus-docker-$1 .
-    docker push michaelpak/otus-linux-$1
+    docker push michaelpak/otus-docker-$1
 }
 
 set -e

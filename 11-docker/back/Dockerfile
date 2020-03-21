@@ -11,7 +11,7 @@ LABEL org.label-schema.vcs-ref=$VCS_REF \
 
 WORKDIR /app
 
-COPY back/requirements.txt /app/
+COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 
 COPY back/server.py /app/

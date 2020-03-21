@@ -21,6 +21,7 @@ build_and_push () {
 set -e
 
 if [[ ${BACK_COMMIT} = ${LATEST_COMMIT} ]]; then
+    debug
     cd 11-docker/back && pipenv lock --requirements > requirements.txt
     echo "Files for backend has changed"
     build_and_push back

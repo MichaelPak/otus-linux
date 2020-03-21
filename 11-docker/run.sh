@@ -7,7 +7,13 @@ FRONT_COMMIT=$(git log -1 --format=format:%H --full-diff 11-docker/front)
 
 docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 
+debug () {
+    ls -l
+    pwd
+}
+
 build_and_push () {
+    debug
     cd 11-docker docker build --build-arg VCS_REF=`git rev-parse --short HEAD` -t michaelpak/otus-linux-$1 .
     docker push michaelpak/otus-linux-$1
 }

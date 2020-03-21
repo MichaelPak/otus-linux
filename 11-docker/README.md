@@ -1,5 +1,6 @@
 11-docker
 ===
+[![Actions Status](https://github.com/MichaelPak/self/workflows/deploy/badge.svg)](https://github.com/MichaelPak/self/actions)
 
 |Backend|Frontend|
 |---|---|

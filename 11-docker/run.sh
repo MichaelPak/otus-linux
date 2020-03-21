@@ -12,6 +12,8 @@ build_and_push () {
     docker push michaelpak/otus-linux-$1
 }
 
+set -e
+
 if [[ ${BACK_COMMIT} = ${LATEST_COMMIT} ]]; then
     cd 11-docker/back && pipenv lock --requirements > requirements.txt
     echo "Files for backend has changed"

@@ -1,0 +1,66 @@
+---
+
+- name: KAFKA SERVER | Create base directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    force: yes
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: 0755
+  loop:
+    - "{{ kafka_conf_path }}"
+    - "{{ kafka_data_path }}"
+    - "{{ kafka_log_path }}"
+    - "{{ kafka_zookeeper_data_path }}"
+
+- name: KAFKA SERVER | Copy Zookeeper service file
+  template:
+    src: "{{ kafka_zookeeper_service_file }}"
+    dest: "{{ systemd_services_path }}/{{ kafka_zookeeper_service_file }}"
+  register: zookeeper_service_trigger
+
+- name: KAFKA SERVER | Copy Zookeeper configuration
+  template:
+    src: "{{ kafka_zookeeper_config_file }}"
+    dest: "{{ kafka_conf_path }}/{{ kafka_zookeeper_config_file }}"
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+  register: zookeeper_config_trigger
+
+- name: KAFKA SERVER | Copy Zookeeper ID
+  template:
+    src: "{{ kafka_zookeeper_id_file }}"
+    dest: "{{ kafka_zookeeper_data_path }}/myid"
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+  register: zookeeper_id_trigger
+
+- name: KAFKA SERVER | Copy Kafka service file
+  template:
+    src: "{{ kafka_service_file }}"
+    dest: "{{ systemd_services_path }}/{{ kafka_service_file }}"
+  register: kafka_service_trigger
+
+- name: KAFKA SERVER | Copy Kafka general config files
+  template:
+    src: "{{ kafka_general_config_file }}"
+    dest: "{{ kafka_conf_path }}/{{ kafka_general_config_file }}"
+  register: kakfa_general_config_triger
+
+- name: KAFKA SERVER | Copy Kafka log config files
+  template:
+    src: "{{ kafka_log_config_file }}"
+    dest: "{{ kafka_conf_path }}/{{ kafka_log_config_file }}"
+  register: kakfa_log_config_triger
+
+- name: KAFKA SERVER | Copy Kafka JAAS config files
+  template:
+    src: "{{ kafka_jaas_config_file }}"
+    dest: "{{ kafka_conf_path }}/{{ kafka_jaas_config_file }}"
+  register: kakfa_jaas_config_triger
+
+- name: KAFKA SERVER | System daemon reload
+  systemd:
+    daemon_reload: yes
+  when: zookeeper_service_trigger.changed or kafka_service_trigger.changed

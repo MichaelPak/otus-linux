@@ -1,0 +1,21 @@
+---
+
+- name: KAFKA SERVER | Install
+  include: install.yml
+  tags:
+    - install
+
+- name: KAFKA SERVER | Config
+  include: config.yml
+  tags:
+    - config
+
+- name: KAFKA SERVER | Control
+  include: control.yml
+  tags:
+    - config
+
+- name: KAFKA SERVER | Monitoring
+  include: monitor.yml
+  tags:
+    - monitor

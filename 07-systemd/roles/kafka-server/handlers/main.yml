@@ -1,0 +1,6 @@
+---
+
+- name: KAFKA SERVER | Restart Zabbix agent
+  systemd:
+    name: zabbix-agent
+    state: restarted

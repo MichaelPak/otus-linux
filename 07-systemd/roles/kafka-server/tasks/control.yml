@@ -1,0 +1,31 @@
+---
+
+- name: KAFKA SERVER | Restart Zookeeper
+  systemd:
+    name: "{{ kafka_zookeeper_service }}"
+    state: restarted
+    enabled: yes
+  when: zookeeper_config_trigger.changed or zookeeper_id_trigger.changed
+
+- name: KAFKA SERVER | Check zookeeper started
+  wait_for:
+    host: localhost
+    port: "{{ kafka_zookeeper_port }}"
+    delay: 0
+    timeout: 10
+  retries: 6
+
+- name: KAFKA SERVER | Restart Kafka
+  systemd:
+    name: "{{ kafka_service }}"
+    state: restarted
+    enabled: yes
+  when: kakfa_general_config_triger.changed or kakfa_log_config_triger.changed or kakfa_jaas_config_triger.changed
+
+- name: KAFKA SERVER | KAFKA SERVER | Check Kafka working
+  shell: "echo dump | ncat localhost {{ kafka_zookeeper_port }} | grep brokers |  cut -d '/' -f 4 | grep {{ kafka_id }}"
+  register: test_kafka_command
+  until: test_kafka_command.stdout == kafka_id|string
+  retries: 10
+  delay: 10
+  changed_when: false

@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Apache Kafka - broker
+Documentation=http://docs.confluent.io/
+After=network.target zookeeper.target
+
+[Service]
+Type=simple
+User={{ kafka_user }}
+Group={{ kafka_group }}
+Environment='{{ kafka_jmx_options }}'
+Environment='{{ kafka_jvm_perfomance_opts }}'
+Environment='{{ kafka_heap_opts }}'
+ExecStart={{ bin_path }}/{{ kafka_server_start_command }} {{ kafka_conf_path }}/{{ kafka_general_config_file }}
+ExecStop={{ bin_path }}/{{ kafka_server_stop_command }}
+
+TimeoutStopSec=180
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,69 @@
+---
+
+kafka_user: cp-kafka
+kafka_group: confluent
+
+# Install
+kafka_os_packages:
+  - bind-utils  # nslookup
+  - nmap-ncat
+  - telnet
+  - java-1.8.0-openjdk
+kafka_package_name: confluent-kafka-2.11-0.10.1.1-1.noarch.rpm
+kafka_temporary_directory: /tmp
+
+# Config
+kafka_zookeeper_ensemble: "{{ groups['kafka_server'] }}"
+
+bin_path: "/usr/bin"
+systemd_services_path: "/etc/systemd/system"
+rsyslog_config_path: "/etc/rsyslog.d"
+
+kafka_conf_path: "/etc/kafka"
+kafka_data_path: "/var/lib/kafka"
+kafka_log_path: "/var/log/kafka"
+
+kafka_zookeeper_data_path: "/var/lib/zookeeper"
+
+kafka_rsyslog_conf: "kafka.conf"
+
+kafka_zookeeper_config_file: "zookeeper.properties"
+kafka_zookeeper_id_file: "zookeeper.myid"
+
+kafka_check_install_command: "kafka-run-class"
+
+kafka_service: "kafka"
+kafka_server_start_command: "kafka-server-start"
+kafka_server_stop_command: "kafka-server-stop"
+kafka_service_file: "{{ kafka_service }}.service"
+
+kafka_zookeeper_service: "zookeeper"
+kafka_zookeeper_server_start_command: "zookeeper-server-start"
+kafka_zookeeper_server_stop_command: "zookeeper-server-stop"
+kafka_zookeeper_service_file: "{{ kafka_zookeeper_service }}.service"
+
+kafka_zookeeper_port: 2181
+kafka_zookeeper_tick_time: 2000
+kafka_zookeeper_max_cnxns: 100
+kafka_zookeeper_init_limit: 5
+kafka_zookeeper_sync_limit: 3
+
+kafka_delete_topic_enable: "true"
+kafka_auto_create_topics_enable: "true"
+
+kafka_java_xmx: "5G"
+kafka_java_xms: "3G"
+
+kafka_general_config_file: "server.properties"
+kafka_log_config_file: "log4j.properties"
+kafka_jaas_config_file: "kafka_server_jaas.conf"
+kafka_zaabix_jaas_config_file: "kafka_zabbix_jaas.conf"
+kafka_jmx_options: "KAFKA_JMX_OPTS=-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=10030 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname={{ ansible_default_ipv4.address }} -Djava.net.preferIPv4Stack=true"
+kafka_jvm_perfomance_opts: "KAFKA_JVM_PERFORMANCE_OPTS=-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80 -Djava.awt.headless=true"
+kafka_heap_opts: "KAFKA_HEAP_OPTS=-Xmx{{ kafka_java_xmx }} -Xms{{ kafka_java_xms }}"
+kafka_plaintext_port: 9092
+kafka_security_port: 9093
+kafka_zookeeper_host: "localhost"
+
+zabbix_user_parameters_path: "/etc/zabbix/zabbix_agentd.d"
+kafka_zabbix_user_parameter_file: "kafka.conf"

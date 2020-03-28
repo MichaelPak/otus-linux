@@ -1,0 +1,22 @@
+---
+
+- name: KAFKA SERVER | Install OS packages
+  yum:
+    name: "{{ item }}"
+  loop: "{{ kafka_os_packages }}"
+
+- name: KAFKA SERVER | Copy temporary Kafka package
+  copy:
+    src: "{{ kafka_package_name }}"
+    dest: "{{ kafka_temporary_directory }}/{{ kafka_package_name }}"
+  changed_when: False
+
+- name: KAFKA SERVER | Install Kafka
+  yum:
+    name: "{{ kafka_temporary_directory }}/{{ kafka_package_name }}"
+
+- name: KAFKA SERVER | Remove temporary Kafka package
+  file:
+    path: "{{ kafka_temporary_directory }}/{{ kafka_package_name }}"
+    state: absent
+  changed_when: False

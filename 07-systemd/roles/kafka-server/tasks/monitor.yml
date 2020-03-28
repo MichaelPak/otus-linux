@@ -1,0 +1,12 @@
+---
+
+- name: KAFKA SERVER | Copy Zabbix JAAS config files
+  template:
+    src: "{{ kafka_zaabix_jaas_config_file }}"
+    dest: "{{ kafka_conf_path }}/{{ kafka_zaabix_jaas_config_file }}"
+
+- name: KAFKA SERVER | Copy Zabbix user parameter for Kafka
+  template:
+    src: "{{ kafka_zabbix_user_parameter_file }}"
+    dest: "{{ zabbix_user_parameters_path }}/{{ kafka_zabbix_user_parameter_file }}"
+  notify: KAFKA SERVER | Restart Zabbix agent

@@ -1,5 +1,6 @@
 # importing os module
-import os, time
+import os
+import time
 
 pid = os.fork()
 

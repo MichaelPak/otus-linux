@@ -12,9 +12,9 @@ otus-linux
 
 4 [bash](04-bash/README.md)
 
-5 [bash](05-process/README.md)
+5 [process](05-process/README.md)
 
-7 [bash](07-systemd/README.md)
+7 [systemd](07-systemd/README.md)
 
 10 [ansible](10-ansible)
 

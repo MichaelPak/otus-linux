@@ -12,6 +12,10 @@ otus-linux
 
 4 [bash](04-bash/README.md)
 
+5 [bash](05-process/README.md)
+
+7 [bash](07-systemd/README.md)
+
 10 [ansible](10-ansible)
 
 11 [docker](11-docker)

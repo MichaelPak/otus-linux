@@ -5,18 +5,36 @@
     name: "{{ item }}"
   loop: "{{ kafka_os_packages }}"
 
-- name: KAFKA SERVER | Copy temporary Kafka package
-  copy:
-    src: "{{ kafka_package_name }}"
-    dest: "{{ kafka_temporary_directory }}/{{ kafka_package_name }}"
-  changed_when: False
+- name: KAFKA SERVER | Import Confluent GPG key
+  rpm_key:
+    key: "{{ kafka_rmp_key }}"
+    state: present
+
+- name: KAFKA SERVER | Copy conlfuent repo
+  template:
+    src: confluent.repo
+    dest: /etc/yum.repos.d/confluent.repo
+  register: confluent_repo
+
+- name: KAFKA SERVER | Clean YUM
+  command: yum clean all  # https://github.com/ansible/ansible/pull/31450#issuecomment-352889579
+  args:
+    warn: false
+  when: confluent_repo.changed
 
 - name: KAFKA SERVER | Install Kafka
   yum:
-    name: "{{ kafka_temporary_directory }}/{{ kafka_package_name }}"
+    name: "{{ kafka_package_name }}"
 
-- name: KAFKA SERVER | Remove temporary Kafka package
-  file:
-    path: "{{ kafka_temporary_directory }}/{{ kafka_package_name }}"
-    state: absent
-  changed_when: False
+- name: KAFKA SERVER | Create Kafka group
+  group:
+    name: "{{ kafka_group }}"
+    system: yes
+
+- name: KAFKA SERVER | Create Kafka user
+  user:
+    name: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    create_home: no
+    system: yes
+

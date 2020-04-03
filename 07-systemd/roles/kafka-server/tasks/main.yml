@@ -15,7 +15,3 @@
   tags:
     - config
 
-- name: KAFKA SERVER | Monitoring
-  include: monitor.yml
-  tags:
-    - monitor

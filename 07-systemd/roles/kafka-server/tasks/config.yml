@@ -20,6 +20,20 @@
     dest: "{{ systemd_services_path }}/{{ kafka_zookeeper_service_file }}"
   register: zookeeper_service_trigger
 
+- name: KAFKA SERVER | Enable Zookeeper unit
+  systemd:
+    name: "{{ kafka_zookeeper_service }}"
+    enabled: yes
+
+- name: KAFKA SERVER | Enforce cgroup limits for Zookeeper
+  command: >
+    systemctl set-property {{ kafka_zookeeper_service_file }}
+      CPUQuota={{ kafka_zookeeper_systemd_cpu_quota }}
+      MemoryLimit={{ kafka_zookeeper_systemd_memory_max }}
+      TasksMax={{ kafka_zookeeper_systemd_tasks_max }}
+  args:
+    creates: "{{ systemd_services_path }}/{{ kafka_zookeeper_service_file }}/50-CPUQuota.conf"
+  register: zookeeper_cgroups_trigger
 - name: KAFKA SERVER | Copy Zookeeper configuration
   template:
     src: "{{ kafka_zookeeper_config_file }}"
@@ -42,6 +56,27 @@
     dest: "{{ systemd_services_path }}/{{ kafka_service_file }}"
   register: kafka_service_trigger
 
+- name: KAFKA SERVER | Enable Kafka unit
+  systemd:
+    name: "{{ kafka_service }}"
+    enabled: yes
+
+- name: KAFKA SERVER | Enforce cgroup limits for Kafka
+  command: >
+    systemctl set-property {{ kafka_service_file }}
+      CPUQuota={{ kafka_systemd_cpu_quota }}
+      MemoryLimit={{ kafka_systemd_memory_max }}
+      TasksMax={{ kafka_systemd_tasks_max }}
+  args:
+    creates: "{{ systemd_services_path }}/{{ kafka_service_file }}/50-CPUQuota.conf"
+  register: kafka_cgroups_trigger
+
+- name: KAFKA SERVER | Copy Kafka socket file
+  template:
+    src: "{{ kafka_socket_file }}"
+    dest: "{{ systemd_services_path }}/{{ kafka_socket_file }}"
+  register: kafka_socket_trigger
+
 - name: KAFKA SERVER | Copy Kafka general config files
   template:
     src: "{{ kafka_general_config_file }}"
@@ -63,4 +98,4 @@
 - name: KAFKA SERVER | System daemon reload
   systemd:
     daemon_reload: yes
-  when: zookeeper_service_trigger.changed or kafka_service_trigger.changed
+  when: zookeeper_service_trigger.changed or kafka_service_trigger.changed or kafka_socket_trigger.changed or kafka_cgroups_trigger.changed or zookeeper_cgroups_trigger.changed

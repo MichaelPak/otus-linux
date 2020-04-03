@@ -10,8 +10,15 @@ Group={{ kafka_group }}
 WorkingDirectory={{ kafka_zookeeper_data_path }}
 ExecStart={{ bin_path }}/{{ kafka_zookeeper_server_start_command }} -daemon {{ kafka_conf_path }}/{{ kafka_zookeeper_config_file }}
 ExecStop={{ bin_path }}/{{ kafka_zookeeper_server_stop_command }}
+
+SuccessExitStatus=143
+
+TimeoutStopSec=180
 Restart=no
-TimeoutSec=20
+
+CPUAccounting=yes
+MemoryAccounting=yes
+TasksAccounting=yes
 
 [Install]
 WantedBy=multi-user.target

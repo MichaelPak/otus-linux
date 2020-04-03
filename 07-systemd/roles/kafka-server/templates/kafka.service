@@ -15,8 +15,14 @@ Environment='{{ kafka_heap_opts }}'
 ExecStart={{ bin_path }}/{{ kafka_server_start_command }} {{ kafka_conf_path }}/{{ kafka_general_config_file }}
 ExecStop={{ bin_path }}/{{ kafka_server_stop_command }}
 
+SuccessExitStatus=143
+
 TimeoutStopSec=180
 Restart=no
+
+CPUAccounting=yes
+MemoryAccounting=yes
+TasksAccounting=yes
 
 [Install]
 WantedBy=multi-user.target

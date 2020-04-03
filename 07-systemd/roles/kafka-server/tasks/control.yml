@@ -5,7 +5,7 @@
     name: "{{ kafka_zookeeper_service }}"
     state: restarted
     enabled: yes
-  when: zookeeper_config_trigger.changed or zookeeper_id_trigger.changed
+  when: zookeeper_config_trigger.changed or zookeeper_id_trigger.changed or zookeeper_cgroups_trigger.changed
 
 - name: KAFKA SERVER | Check zookeeper started
   wait_for:
@@ -20,7 +20,7 @@
     name: "{{ kafka_service }}"
     state: restarted
     enabled: yes
-  when: kakfa_general_config_triger.changed or kakfa_log_config_triger.changed or kakfa_jaas_config_triger.changed
+  when: kakfa_general_config_triger.changed or kakfa_log_config_triger.changed or kakfa_jaas_config_triger.changed or zookeeper_service_trigger.changed or kafka_service_trigger.changed or kafka_socket_trigger.changed or kafka_cgroups_trigger.changed
 
 - name: KAFKA SERVER | KAFKA SERVER | Check Kafka working
   shell: "echo dump | ncat localhost {{ kafka_zookeeper_port }} | grep brokers |  cut -d '/' -f 4 | grep {{ kafka_id }}"

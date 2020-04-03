@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  become: yes
+
+  vars:
+    kafka_id: 1
+
+  tasks:
+    - name: Kafka Servers
+      include_role:
+        name: kafka-server

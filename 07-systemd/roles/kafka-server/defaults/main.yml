@@ -1,6 +1,6 @@
 ---
 
-kafka_user: cp-kafka
+kafka_user: kafka
 kafka_group: confluent
 
 # Install
@@ -9,11 +9,11 @@ kafka_os_packages:
   - nmap-ncat
   - telnet
   - java-1.8.0-openjdk
-kafka_package_name: confluent-kafka-2.11-0.10.1.1-1.noarch.rpm
-kafka_temporary_directory: /tmp
+kafka_rmp_key: "http://packages.confluent.io/rpm/3.1/archive.key"
+kafka_package_name: "confluent-kafka-2.11"
 
 # Config
-kafka_zookeeper_ensemble: "{{ groups['kafka_server'] }}"
+kafka_zookeeper_ensemble: "{{ groups['all'] }}"
 
 bin_path: "/usr/bin"
 systemd_services_path: "/etc/systemd/system"
@@ -36,11 +36,20 @@ kafka_service: "kafka"
 kafka_server_start_command: "kafka-server-start"
 kafka_server_stop_command: "kafka-server-stop"
 kafka_service_file: "{{ kafka_service }}.service"
+kafka_socket_file: "{{ kafka_service }}.socket"
+
+kafka_systemd_cpu_quota: "70%"
+kafka_systemd_memory_max: "1000M"
+kafka_systemd_tasks_max: "200"
 
 kafka_zookeeper_service: "zookeeper"
 kafka_zookeeper_server_start_command: "zookeeper-server-start"
 kafka_zookeeper_server_stop_command: "zookeeper-server-stop"
 kafka_zookeeper_service_file: "{{ kafka_zookeeper_service }}.service"
+
+kafka_zookeeper_systemd_cpu_quota: "20%"
+kafka_zookeeper_systemd_memory_max: "500M"
+kafka_zookeeper_systemd_tasks_max: "200"
 
 kafka_zookeeper_port: 2181
 kafka_zookeeper_tick_time: 2000
@@ -51,8 +60,11 @@ kafka_zookeeper_sync_limit: 3
 kafka_delete_topic_enable: "true"
 kafka_auto_create_topics_enable: "true"
 
-kafka_java_xmx: "5G"
-kafka_java_xms: "3G"
+kafka_java_xmx: "1G"
+kafka_java_xms: "1G"
+
+kafka_jaas_user: "user"
+kafka_jaas_passwd: "passwd"
 
 kafka_general_config_file: "server.properties"
 kafka_log_config_file: "log4j.properties"

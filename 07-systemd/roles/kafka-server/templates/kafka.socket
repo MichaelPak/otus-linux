@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Apache Kafka - broker
+Documentation=http://docs.confluent.io/
+PartOf=kafka.service
+
+[Socket]
+ListenStream={{ ansible_default_ipv4.address }}:{{ kafka_plaintext_port }}
+
+[Install]
+WantedBy=sockets.target

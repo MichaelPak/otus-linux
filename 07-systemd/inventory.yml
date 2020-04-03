@@ -2,10 +2,7 @@
 
 all:
   children:
-
-    web:
+    kafka-servers:
       hosts:
-        nginx:
+        kafka01:
           ansible_host: 192.168.11.150
-          ansible_user: vagrant
-          ansible_ssh_pass: vagrant  # Bad practice

@@ -10,7 +10,7 @@ kafka_os_packages:
   - telnet
   - java-1.8.0-openjdk
 kafka_rmp_key: "http://packages.confluent.io/rpm/3.1/archive.key"
-kafka_package_name: "confluent-kafka-2.11"
+kafka_package_name: "confluent-kafka-2.12"
 
 # Config
 kafka_zookeeper_ensemble: "{{ groups['all'] }}"

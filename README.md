@@ -19,4 +19,3 @@ otus-linux
 10 [ansible](10-ansible)
 
 11 [docker](11-docker)
-
